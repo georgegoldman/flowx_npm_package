@@ -1,3 +1,4 @@
-module.exports = function sayHello() {
-    console.log("This is God working in men 😇!");
-};
+const Wallet = require("./libs/client");
+const Client = require("./libs/wallet");
+
+module.exports = {Wallet, Client}

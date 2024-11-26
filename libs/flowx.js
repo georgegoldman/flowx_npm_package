@@ -7,6 +7,7 @@ class FlowxEnv {
     constructor() {
         this.homeDir = os.homedir(); // Get the user's home directory
         this.filePath = path.join(this.homeDir, '.flowx'); // Full path to the .flowx file
+        
     }
 
     loadFlowxEnv() {
@@ -20,7 +21,7 @@ class FlowxEnv {
 
     getAccessToken() {
         // Retrieve the 'access_token' from the environment variables
-        return process.env.ACCESS_TOKEN;
+        return process.env.access_token;
     }
 }
 

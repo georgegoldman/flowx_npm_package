@@ -34,3 +34,5 @@ class Wallet {
           return transaction;
     }
 }
+
+module.exports = Wallet;
