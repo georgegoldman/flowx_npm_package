@@ -11,7 +11,7 @@ About FlowX is designed to empower developers building financial solutions by of
 ## Installation
 Install the package via npm:
 ```
-npm install flowx-npm-package
+npm install flowx_npm_package
 ```
 
 ## Usage

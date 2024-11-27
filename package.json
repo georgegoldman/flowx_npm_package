@@ -1,5 +1,5 @@
 {
-  "name": "flowx_npm_package",
+  "name": "flowx_sdk",
   "version": "1.0.2",
   "description": "FlowX is designed to empower developers building financial solutions by offering a protocol for efficient, low-cost cross-border payments using stablecoins. FlowX will help developers solve real-world issues in African financial systems, such as high remittance costs, limited liquidity, and currency volatility.",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.7.8",
     "crypto": "^1.0.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "flowx_npm_package": "^1.0.2"
   }
 }
