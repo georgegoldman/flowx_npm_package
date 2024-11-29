@@ -1,10 +1,14 @@
 {
   "name": "flowx_sdk",
   "version": "1.0.2",
+  "type": "module",
   "description": "FlowX is designed to empower developers building financial solutions by offering a protocol for efficient, low-cost cross-border payments using stablecoins. FlowX will help developers solve real-world issues in African financial systems, such as high remittance costs, limited liquidity, and currency volatility.",
   "main": "index.js",
+  "module": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.config.js",
+    "test": "node test/testClient.js",
+    "start": "node index.js"
   },
   "author": "Holy Spirit",
   "license": "ISC",
@@ -12,6 +16,17 @@
     "axios": "^1.7.8",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
-    "flowx_npm_package": "^1.0.2"
+    "flowx_npm_package": "^1.0.2",
+    "flowx_sdk": "^1.0.2",
+    "path-browserify": "^1.0.1",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-loader": "^9.2.1",
+    "vite": "^6.0.1",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
   }
 }

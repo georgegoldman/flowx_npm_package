@@ -1,59 +1,64 @@
-const axios = require("axios");
-const FlowxEnv = require("./flowx"); // Placeholder for your FlowxCLI class
-const { Transaction, TransactionManager } = require("../transaction"); // Placeholder for your TransactionManager and Transaction classes
-const Wallet = require("./wallet"); // placeholder for your wallet class
-const settings = require("../core/config"); // Placeholder for your settings file
+// Import statements
+import axios from "axios";
+import FlowxEnv from "./flowx.js"; // Your FlowxCLI class
+import { Transaction, TransactionManager } from "./transaction.js"; // Transaction and TransactionManager classes
+import Wallet from "./wallet.js"; // Your Wallet class
+import settings from "../core/config.js"; // Settings file for shared configuration
+
+// Check if we are in the Node.js or browser environment
+const isNodeEnv = typeof window === 'undefined';
 
 class Client {
     constructor(apiKey) {
         this.FlowxEnv = new FlowxEnv();
         this.apiKey = apiKey;
-        this._baseUrl = settings.baseUrl;
+        this._baseUrl = settings.baseUrl; // Use base URL from settings
         this.authenticated = false;
 
-        // Initiliazed HTTP client (axios)
+        // Initialize HTTP client (axios)
         this.session = axios.create();
 
-        // attempt to authenticate on intializaton
+        // Attempt to authenticate on initialization
         this.authenticate();
     }
 
     async authenticate() {
-        // Load environment variables
-        this.FlowxEnv.loadFlowxEnv();
+        // Load environment variables for Node.js
+        if (isNodeEnv) {
+            this.FlowxEnv.loadFlowxEnv();
+        }
 
         const authUrl = `${this._baseUrl}/verify-token/${this.apiKey}`;
-        console.log(`Authenticating with URL: ${authUrl}`); // debuging
+        console.log(`Authenticating with URL: ${authUrl}`); // Debugging
 
         const headers = {
             Authorization: `Bearer ${this.FlowxEnv.getAccessToken()}`,
-        }
-        console.log(`Headers:`, headers) // Debuging
+        };
+        console.log(`Headers:`, headers); // Debugging
 
         try {
-            const response = await this.session.get(authUrl, {headers});
+            const response = await this.session.get(authUrl, { headers });
             console.log(response.status); // Debugging
-            
 
-            if (response.status == 200){
+            if (response.status === 200) {
                 this.authenticated = true;
                 console.log('Authenticated successfully');
             } else {
                 this.authenticated = false;
-                console.log('Authenticating failed 🌋 please check your API-Token');
+                console.log('Authentication failed 🌋 Please check your API-Token');
             }
         } catch (error) {
             this.authenticated = false;
-            console.error('Authentication error:', error.message)
+            console.error('Authentication error:', error.message);
         }
     }
 
     getSupportedCurrencies() {
         const supportedCurrencies = {
-          stablecoins: ['USDT', 'USDC', 'DAI', 'BUSD', 'EUROC'],
-          africanFiat: ['NGN', 'KES', 'ZAR', 'GHS', 'TZS', 'UGX'],
-          globalFiat: ['USD', 'EUR', 'GBP'],
-          cryptocurrencies: ['SUI', 'BTC', 'ETH', 'XRP'],
+            stablecoins: ['USDT', 'USDC', 'DAI', 'BUSD', 'EUROC'],
+            africanFiat: ['NGN', 'KES', 'ZAR', 'GHS', 'TZS', 'UGX'],
+            globalFiat: ['USD', 'EUR', 'GBP'],
+            cryptocurrencies: ['SUI', 'BTC', 'ETH', 'XRP'],
         };
         return JSON.stringify(supportedCurrencies);
     }
@@ -76,7 +81,7 @@ class Client {
             (tx) => tx.transactionId == newTransaction.transactionId
         );
 
-        if (index != -1) {
+        if (index !== -1) {
             transactions[index] = newTransaction;
         }
 
@@ -96,14 +101,13 @@ class Client {
         const wallet = new Wallet();
         wallet.sendFund(newTransaction);
 
-
         // Find and return the transaction status
         const transaction = transactionManager
-        .listTransaction()
-        .find((tx) => tx.transactionId == paymentId);
+            .listTransaction()
+            .find((tx) => tx.transactionId == paymentId);
 
         return transaction ? transaction.status : 'Transaction does not exist';
     }
 }
 
-module.exports = Client;
+export default Client;

@@ -1,6 +1,6 @@
-const crypto  = require("crypto");
+// Conditional imports based on environment
+import crypto from "crypto";
 
-// Define currencies (same structure as in Python)
 class Wallet {
     constructor() {
         this.walletAddress = null;
@@ -15,24 +15,32 @@ class Wallet {
 
     // Generate a unique wallet address
     static generateWalletAddress() {
-        return '0x' + crypto.randomBytes(32).toString('hex');
+        if (typeof window === 'undefined') {
+            // Node.js: Use the 'crypto' module to generate a random address
+            return '0x' + crypto.randomBytes(32).toString('hex');
+        } else {
+            // Browser: Use Web Crypto API for random bytes generation
+            const array = new Uint8Array(32);
+            window.crypto.getRandomValues(array); // Fill array with random values
+            return '0x' + Array.from(array).map(byte => byte.toString(16).padStart(2, '0')).join('');
+        }
     }
 
     // Fetch wallet balance (mock implementation)
     getWalletBalance(currency) {
         // In a real implementation, the balance could vary depending on the currency
-        return this._balance
+        return this._balance;
     }
 
-    sendFund(transaction){
+    sendFund(transaction) {
         if (this._balance >= (transaction.amount + transaction.transactionCharge)) {
             this._balance -= (transaction.amount + transaction.transactionCharge);
             transaction.status = "successful";
-          } else {
+        } else {
             transaction.status = "unsuccessful";
-          }
-          return transaction;
+        }
+        return transaction;
     }
 }
 
-module.exports = Wallet;
+export default Wallet;

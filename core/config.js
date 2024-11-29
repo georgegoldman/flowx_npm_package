@@ -1,11 +1,21 @@
-const dotenv = require("dotenv");
+// config.js
 
-// Load `.env` file and environment variables
-dotenv.config({path: '.env',encoding: 'utf-8'});
+import dotenv from "dotenv";
+
+// Check if running in Node.js environment
+const isNodeEnv = typeof window === 'undefined';
+
+// For Node.js (backend), we use dotenv to load environment variables
+if (isNodeEnv) {
+    dotenv.config(); // Load `.env` file for Node.js
+}
+
+// Define your settings, and use process.env for backend, or fallback for frontend
+const BASE_URL = isNodeEnv ? process.env.BASE_URL : import.meta.env.VITE_BASE_URL || 'https://flowx-backend.onrender.com/api/v1';
 
 class Settings {
     constructor() {
-        this.baseUrl = process.env.BASE_URL; // Fetch `BASE_URL` from the `.env` file
+        this.baseUrl = BASE_URL;
     }
 
     /**
@@ -13,16 +23,17 @@ class Settings {
    * Throws an error if required variables are missing.
    */
     static getValidatedSettings() {
-        const baseUrl = process.env.BASE_URL;
+        const baseUrl = BASE_URL;
 
         if (!baseUrl) {
-        throw new Error("BASE_URL is required in the environment variables.");
+            throw new Error("BASE_URL is required.");
         }
 
         return new Settings();
     }
 }
 
-const settings = Settings.getValidatedSettings()
+// Get validated settings
+const settings = Settings.getValidatedSettings();
 
-module.exports = settings;
+export default settings;
