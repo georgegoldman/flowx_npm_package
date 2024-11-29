@@ -7,7 +7,7 @@ export default {
     fallback: {
       path: require.resolve('path-browserify'), // Polyfill for 'path' module
       fs: false, // Exclude 'fs' module for the browser
-      os: false, // Exclude 'os' module for the browser
+      os: require.resolve('os-browserify/browser'), // Exclude 'os' module for the browser
       util: require.resolve('util/'), // Polyfill for 'util' module if needed
     },
   },
