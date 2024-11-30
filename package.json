@@ -13,6 +13,7 @@
   "author": "Holy Spirit",
   "license": "ISC",
   "dependencies": {
+    "@mysten/sui.js": "^0.54.1",
     "axios": "^1.7.8",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.1",

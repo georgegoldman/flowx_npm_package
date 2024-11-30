@@ -55,12 +55,12 @@ if (client.authenticated) {
     console.log('Authentication failed!');
 }
 ```
-Fetch Supported Currencies
+**Fetch Supported Currencies**
 ```
 const supportedCurrencies = client.getSupportedCurrencies();
 console.log(supportedCurrencies);
 ```
-Send Payment
+**Send Payment**
 ```
 const senderWallet = new Wallet();
 const receiverWallet = new Wallet();
@@ -68,10 +68,85 @@ const transaction = client.sendPayment(senderWallet, receiverWallet, 50, 'USDT')
 console.log(`Transaction ID: ${transaction.transaction_id}`);
 console.log(`Transaction Status: ${transaction.status}`);
 ```
-Check Payment Status
+**Check Payment Status**
 ```
 const status = client.getPaymentStatus('transaction_id_here');
 console.log(`Payment status: ${status}`);
+```
+
+**Create Liquidity Pool** <br>
+Creating a liquidity pool involves calling the Move function create_pool. This operation will initialize the pool with two tokens and a specified fee rate.
+
+Example: Create Liquidity Pool
+
+```
+const tokenXAmount = 1000;
+const tokenYAmount = 1000;
+const feeRate = 30;  // Fee rate (e.g., 30 basis points)
+
+const createPool = async () => {
+  const pool = await liquidityService.createLiquidityPool(tokenXAmount, tokenYAmount, feeRate);
+  console.log('Liquidity Pool Created:', pool);
+};
+createPool();
+
+```
+
+This will:
+
+- Create a pool using tokenXAmount and tokenYAmount for the two assets.
+- Set the feeRate for transactions within the pool.
+___
+
+**Add Liquidity**
+<br>
+After creating a liquidity pool, you can add more liquidity to it. Use the addLiquidity function to provide more tokens to the pool.
+<br>
+Example: Add Liquidity
+```
+const poolAddress = 'your_pool_address_here';  // Replace with actual pool address
+const inputTokenAmount = 100;  // Amount of the token to swap
+const inputTokenType = 'TokenX';  // The type of token being swapped (e.g., 'TokenX' or 'TokenY')
+
+const stableSwap = async () => {
+  const result = await liquidityService.stableSwap(poolAddress, inputTokenAmount, inputTokenType);
+  console.log('Swap Completed:', result);
+};
+stableSwap();
+```
+This will:
+- Perform a swap of inputTokenAmount of inputTokenType (either 'TokenX' or 'TokenY') within the liquidity pool.
+
+**Check Liquidity Pool Status** <br>
+You can check the status of a liquidity pool to see the current reserves, fee rate, and other important details.
+<br>
+Example: Check Pool Status
+```
+const poolAddress = 'your_pool_address_here';  // Replace with actual pool address
+
+const checkPoolStatus = async () => {
+  const status = await liquidityService.getPoolStatus(poolAddress);
+  console.log('Pool Status:', status);
+};
+checkPoolStatus();
+```
+This will:
+- Retrieve and display the current status of the liquidity pool, including reserves and other relevant data.
+
+**Get Transaction Status**
+<br>
+To check the status of any transaction (such as creating a pool, adding liquidity, or performing a swap), you can retrieve the transaction status using the transaction ID.
+<br>
+Example: Get Transaction Status
+```
+const transactionId = 'your_transaction_id_here';  // Replace with actual transaction ID
+
+const checkTransactionStatus = async () => {
+  const status = await client.getTransactionStatus(transactionId);
+  console.log(`Transaction Status: ${status}`);
+};
+checkTransactionStatus();
+
 ```
 ___
 ## Configuration
