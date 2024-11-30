@@ -11,13 +11,14 @@ About FlowX is designed to empower developers building financial solutions by of
 ## Installation
 Install the package via npm:
 ```
-npm install flowx_npm_package
+npm install flowx_sdk
 ```
 
 ## Usage
 ### Importing the Package
 ```
-const { Wallet, Client } = require('flowx-npm-package');
+import Client from "flowx_sdk/libs/client.js";
+import Wallet from "flowx_sdk/libs/wallet.js";
 ```
 
 ### Wallet
@@ -33,7 +34,7 @@ console.log(`Wallet balance: ${balance}`);
 ```
 Send Funds
 ```
-const Transaction = require('flowx-npm-package/lib/transaction'); // Assuming Transaction is defined in the package
+const Transaction = require('flowx_sdk/lib/transaction'); // Assuming Transaction is defined in the package
 const senderWallet = new Wallet();
 const receiverWallet = new Wallet();
 
@@ -158,7 +159,7 @@ BASE_URL=https://api.your-service.com
 ___
 ## File Structure
 ```
-flowx-npm-package/
+flowx_sdk/
 ├── lib/                   # Library files
 │   ├── wallet.js          # Wallet implementation
 │   ├── client.js          # Client implementation
